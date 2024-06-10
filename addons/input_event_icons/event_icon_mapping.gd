@@ -144,7 +144,14 @@ func _parse_mouse_button_event(event: InputEventMouseButton) -> EventIcon:
 func _parse_key_event(event: InputEventKey) -> KeyboardEventIcon:
 	var icon_filename := MISSING_KEY_ICON
 	var event_icon := KeyboardEventIcon.new()
-	var keystring := OS.get_keycode_string(event.keycode).to_lower()
+	var keycode: int
+	var keystring: String
+
+	if event.physical_keycode != KEY_NONE:
+		keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
+	else:
+		keycode = event.keycode
+	keystring = OS.get_keycode_string(keycode).to_lower()
 
 	if keystring in _keystring_filename_lookup:
 		keystring = _keystring_filename_lookup[keystring]
