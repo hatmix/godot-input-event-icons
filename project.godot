@@ -10,12 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Godot-4-CI"
-config/description="Testing GH action CI with Godot 4 and GUT"
-run/main_scene="res://main.tscn"
+config/name="Godot Input Event Icons"
+config/description="Addon to show pictures for common control inputs"
 config/features=PackedStringArray("4.2")
-config/icon="res://icon.png"
 
-[rendering]
+[editor_plugins]
 
-renderer/rendering_method="gl_compatibility"
+enabled=PackedStringArray("res://addons/godot_resource_groups/plugin.cfg", "res://addons/input_event_icons/plugin.cfg")

@@ -8,5 +8,4 @@ Exports/
 .godot/
 .plugged/
 .justfile
-addons/
-!addons/gd-plug/
+addons/godot_resource_groups
