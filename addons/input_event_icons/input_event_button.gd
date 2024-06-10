@@ -1,6 +1,6 @@
 @tool
-class_name InputEventIcon
-extends TextureRect
+class_name InputEventButton
+extends Button
 
 @export var input_event: InputEvent:
 	set = set_input_event
@@ -16,7 +16,7 @@ func _update_icon() -> void:
 	var event_icon_mapping := EventIconMapping.new()
 	var event_icon: EventIconMapping.EventIcon = event_icon_mapping.get_icon_for_event(input_event)
 	if not event_icon is EventIconMapping.UnsupportedEventIcon:
-		texture = event_icon.texture
+		icon = event_icon.texture
 		if event_icon is EventIconMapping.KeyboardEventIcon:
 			event_icon = event_icon as EventIconMapping.KeyboardEventIcon
 			modulate = Color("#E73246") if event_icon.is_numpad else Color.WHITE
