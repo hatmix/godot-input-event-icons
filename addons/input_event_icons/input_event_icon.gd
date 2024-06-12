@@ -19,4 +19,4 @@ func _update_icon() -> void:
 		texture = event_icon.texture
 		if event_icon is EventIconMapping.KeyboardEventIcon:
 			event_icon = event_icon as EventIconMapping.KeyboardEventIcon
-			modulate = Color("#E73246") if event_icon.is_numpad else Color.WHITE
+			self_modulate = Color("#E73246") if event_icon.is_numpad else Color.WHITE
