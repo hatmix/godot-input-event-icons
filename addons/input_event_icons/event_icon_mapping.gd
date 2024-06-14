@@ -152,8 +152,10 @@ func _parse_key_event(event: InputEventKey) -> KeyboardEventIcon:
 	# https://docs.godotengine.org/en/stable/classes/class_inputeventkey.html
 	if event.keycode != KEY_NONE:
 		keycode = event.keycode
-	else:
+	elif OS.get_name() != "Web":
 		keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
+	else:
+		keycode = event.physical_keycode
 	keystring = OS.get_keycode_string(keycode).to_lower()
 
 	if keystring in _keystring_filename_lookup:
