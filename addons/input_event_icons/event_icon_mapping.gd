@@ -1,11 +1,13 @@
 class_name EventIconMapping
-extends RefCounted
+extends Resource
+
+enum IconSet { KENNEY_STANDARD, KENNEY_1_BIT }
 
 const MISSING_KEY_ICON := "generic_button_square_outline"
 const MISSING_MOUSE_ICON := "mouse_outline"
 const MISSING_JOYPAD_ICON := "controller_generic"
 
-var _keystring_filename_lookup := {
+static var _keystring_filename_lookup := {
 	"equal": "equals",
 	"bracketleft": "bracket_open",
 	"bracketright": "bracket_close",
@@ -26,29 +28,39 @@ var _keystring_filename_lookup := {
 	"kp enter": "kp numpad_enter",
 }
 
-static var _images: Array[Texture2D]
-static var _path_to_image: Dictionary = {}
-static var _group: ResourceGroup = (
-	preload("res://addons/input_event_icons/icons/kenney-standard.tres") as ResourceGroup
-)
+static var images: Dictionary = {
+	IconSet.KENNEY_STANDARD: [],
+	IconSet.KENNEY_1_BIT: [],
+}
+static var path_to_image: Dictionary = {
+	IconSet.KENNEY_STANDARD: {},
+	IconSet.KENNEY_1_BIT: {},
+}
+static var group: Dictionary = {
+	IconSet.KENNEY_STANDARD: preload("res://addons/input_event_icons/icons/kenney-standard.tres"),
+	IconSet.KENNEY_1_BIT: preload("res://addons/input_event_icons/icons/kenney-1-bit.tres"),
+}
+
+var icon_set: IconSet = IconSet.KENNEY_STANDARD
 
 
 func _init() -> void:
-	if _images.size() == 0:
-		_group.load_all_into(_images)
-		for idx: int in range(_group.paths.size()):
-			_path_to_image[_group.paths[idx]] = _images[idx]
+	for iconset: int in IconSet.values():
+		if images[iconset].size() == 0:
+			group[iconset].load_all_into(images[iconset])
+			for idx: int in range(group[iconset].paths.size()):
+				path_to_image[group[iconset].paths[idx]] = images[iconset][idx]
 
 
 func _get_full_path(icon_filename: String) -> String:
-	return "%s/%s.png" % [_group.base_folder, icon_filename]
+	return "%s/%s.png" % [group[icon_set].base_folder, icon_filename]
 
 
 func _texture_from_filename(icon_filename: String, default: String) -> Texture2D:
 	icon_filename = _get_full_path(icon_filename)
-	if icon_filename in _path_to_image:
-		return _path_to_image[icon_filename]
-	return _path_to_image[_get_full_path(default)]
+	if icon_filename in path_to_image:
+		return path_to_image[icon_filename]
+	return path_to_image[_get_full_path(default)]
 
 
 func get_icon_for_event(event: InputEvent) -> EventIcon:
@@ -100,7 +112,7 @@ func _parse_joypad_button_event(event: InputEventJoypadButton) -> EventIcon:
 	var matches := regex.search_all(event.as_text())
 	for rematch: RegExMatch in matches:
 		if rematch.strings[0].contains("Xbox"):
-			if rematch.strings[3] in ["A", "B", "C", "D"]:
+			if rematch.strings[3] in ["A", "B", "X", "Y"]:
 				icon_filename = "xbox_button_color_%s" % rematch.strings[3].to_lower()
 			elif rematch.strings[3] in ["L", "R"]:
 				icon_filename = "xbox_stick_side_%s" % rematch.strings[3].to_lower()

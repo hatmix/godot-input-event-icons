@@ -5,6 +5,7 @@ Exports/
 *.import
 *.mkv
 *.mp4
+*.tmp
 .godot/
 .plugged/
 .justfile

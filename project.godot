@@ -14,6 +14,14 @@ config/name="Godot Input Event Icons"
 config/description="Addon to show pictures for common control inputs"
 config/features=PackedStringArray("4.2")
 
+[display]
+
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/scale=2.0
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_resource_groups/plugin.cfg", "res://addons/input_event_icons/plugin.cfg")
